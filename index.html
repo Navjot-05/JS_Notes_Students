@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JavaScript Documentation for Students — Interactive Guide & Playground</title>
+  <meta name="description" content="A beginner-friendly JavaScript documentation with interactive examples, dark/light theme, live code runner, quiz, and cheat sheet.">
+  
+  <!-- CSS Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/syntax.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2220%22 fill=%22%23f7df1e%22/><text y=%2270%22 x=%2220%22 font-family=%22sans-serif%22 font-size=%2260%22 font-weight=%22900%22 fill=%22%23000%22>JS</text></svg>">
+</head>
+<body>
+
+  <!-- Top Sticky Header -->
+  <header class="top-header">
+    <div style="display: flex; align-items: center; gap: 0.75rem;">
+      <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle navigation menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+
+      <div class="brand-section" onclick="switchView('docs'); scrollToTopic('getting-started');">
+        <div class="logo-icon">JS</div>
+        <div>
+          <span class="brand-title">JS Docs</span>
+          <span class="brand-tag">Student Edition</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Search Input -->
+    <div class="search-container">
+      <div class="search-input-wrapper">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input type="text" id="search-input" class="search-input" placeholder="Search concepts, methods (e.g. map, fetch, const)..." autocomplete="off">
+        <button id="search-clear" class="search-clear" title="Clear search">&times;</button>
+      </div>
+    </div>
+
+    <!-- Header Actions & Navigation Tabs -->
+    <div class="header-actions">
+      <button class="action-btn active" data-view-target="docs" title="Read Documentation">
+        <span>📖 Docs</span>
+      </button>
+      <button class="action-btn" data-view-target="playground" title="Interactive Code Playground">
+        <span>⚡ Playground</span>
+      </button>
+      <button class="action-btn" data-view-target="quiz" title="Test Your Knowledge">
+        <span>📝 Quiz</span>
+      </button>
+      <button class="action-btn" data-view-target="cheatsheet" title="Quick Syntax Cheat Sheet">
+        <span>📌 Cheat Sheet</span>
+      </button>
+
+      <!-- Dark / Light Theme Toggle Button -->
+      <button id="theme-toggle-btn" class="theme-toggle-btn" aria-label="Toggle Dark and Light theme" title="Toggle Theme">
+        <!-- Moon Icon for Light Mode -->
+        <svg class="theme-icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+        <!-- Sun Icon for Dark Mode -->
+        <svg class="theme-icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="5"></circle>
+          <line x1="12" y1="1" x2="12" y2="3"></line>
+          <line x1="12" y1="21" x2="12" y2="23"></line>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+          <line x1="1" y1="12" x2="3" y2="12"></line>
+          <line x1="21" y1="12" x2="23" y2="12"></line>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Student Learning Progress Tracker -->
+  <div class="student-progress-wrapper">
+    <div class="progress-stats">
+      <span>🎓 <strong>Your Learning Progress:</strong></span>
+      <div class="progress-bar-container">
+        <div id="progress-bar-fill" class="progress-bar-fill"></div>
+      </div>
+      <span id="progress-count-text">0 of 18 completed (0%)</span>
+    </div>
+    <div>
+      <button class="reset-progress-btn" onclick="resetProgress()">Reset Progress</button>
+    </div>
+  </div>
+
+  <!-- Main Container -->
+  <div class="app-container">
+
+    <!-- Sticky Left Sidebar (Navigation & Checklists) -->
+    <aside class="docs-sidebar" id="docs-sidebar">
+      <nav id="sidebar-nav">
+        <!-- Rendered dynamically by app.js -->
+      </nav>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+
+      <!-- VIEW 1: Documentation View -->
+      <div id="view-docs" class="view-container active-view">
+        <div id="docs-content">
+          <!-- Rendered dynamically from docs-data.js -->
+        </div>
+      </div>
+
+      <!-- VIEW 2: Interactive Sandbox Playground -->
+      <div id="view-playground" class="view-container">
+        <div class="playground-view">
+          <div class="section-header">
+            <span class="section-tag">Interactive Environment</span>
+            <h2 class="section-title">JavaScript Scratchpad & Playground</h2>
+            <p class="section-subtitle">Experiment with JavaScript code freely. Select a starter template or write your own algorithms and see the results instantly.</p>
+          </div>
+
+          <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; margin-top: 1rem;">
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <label for="playground-template-select" style="font-size: 0.85rem; font-weight: 600; color: var(--text-secondary);">Load Template:</label>
+              <select id="playground-template-select" style="padding: 0.4rem 0.75rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color); background: var(--bg-tertiary); color: var(--text-primary); font-family: inherit; font-size: 0.85rem;">
+                <option value="arrays">Array Methods (map, filter, reduce)</option>
+                <option value="asyncFetch">Async / Await with Fetch API</option>
+                <option value="destructuring">Object & Array Destructuring</option>
+                <option value="domSimulation">Dynamic DOM Node Simulation</option>
+              </select>
+            </div>
+
+            <div style="display: flex; gap: 0.5rem;">
+              <button id="playground-clear-btn" class="action-btn" title="Clear Console">
+                🗑️ Clear Console
+              </button>
+              <button id="playground-run-btn" class="action-btn active" title="Execute Code (Ctrl + Enter)">
+                ▶ Run Code (Ctrl+Enter)
+              </button>
+            </div>
+          </div>
+
+          <div class="playground-grid">
+            <!-- Code Editor Pane -->
+            <div class="playground-pane">
+              <div class="playground-pane-header">
+                <span class="playground-pane-title">
+                  <span>💻</span>
+                  <span>Editor (script.js)</span>
+                </span>
+                <span style="font-size: 0.75rem; color: var(--text-muted);">Press Ctrl+Enter to run</span>
+              </div>
+              <textarea id="playground-editor" class="playground-editor-textarea" spellcheck="false" placeholder="// Write JavaScript code here..."></textarea>
+            </div>
+
+            <!-- Console Output Pane -->
+            <div class="playground-pane">
+              <div class="playground-pane-header">
+                <span class="playground-pane-title">
+                  <span>📟</span>
+                  <span>Virtual Console Output</span>
+                </span>
+                <span class="badge-pill badge-green">Ready</span>
+              </div>
+              <div id="playground-console-output" class="playground-console">
+                <div style="color: #64748b; font-style: italic;">
+                  Click "▶ Run Code" or press Ctrl+Enter to execute. Output logs, warnings, errors, and tables appear here.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- VIEW 3: Student Knowledge Check Quiz -->
+      <div id="view-quiz" class="view-container">
+        <div class="quiz-view">
+          <div class="section-header">
+            <span class="section-tag">Student Knowledge Check</span>
+            <h2 class="section-title">JavaScript Mastery Quiz</h2>
+            <p class="section-subtitle">Test your understanding with 12 targeted multiple-choice questions. Get instant explanations for every question!</p>
+          </div>
+
+          <!-- Score Card (Displayed at the end) -->
+          <div id="quiz-score-card" class="quiz-card" style="display: none; background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(16, 185, 129, 0.1)); border: 2px solid var(--accent-primary);">
+            <div style="font-size: 0.85rem; font-weight: 700; color: var(--accent-primary); text-transform: uppercase;">Quiz Completed!</div>
+            <div style="font-size: 2.2rem; font-weight: 800; margin: 0.5rem 0;" id="quiz-final-score">0 / 12</div>
+            <p id="quiz-feedback-text" style="font-size: 1rem; color: var(--text-secondary); margin-bottom: 1.25rem;"></p>
+            <button class="action-btn active" onclick="restartQuiz()">🔄 Retake Quiz</button>
+          </div>
+
+          <!-- Questions Container -->
+          <div id="quiz-questions-container">
+            <!-- Rendered by quiz.js -->
+          </div>
+        </div>
+      </div>
+
+      <!-- VIEW 4: Quick Syntax Cheat Sheet -->
+      <div id="view-cheatsheet" class="view-container">
+        <div style="max-width: 1000px; margin: 0 auto;">
+          <div class="section-header">
+            <span class="section-tag">Quick Reference</span>
+            <h2 class="section-title">JavaScript Student Cheat Sheet</h2>
+            <p class="section-subtitle">Compact syntax guide for quick lookup during coding assignments and exams.</p>
+          </div>
+
+          <div id="cheatsheet-content">
+            <!-- Rendered by app.js -->
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Footer -->
+  <footer class="app-footer">
+    <p><strong>JavaScript Student Documentation</strong> &bull; Designed for beginner learners with comprehensive examples, live code playgrounds, and interactive quizzes.</p>
+    <p style="margin-top: 0.4rem;">Toggle Light / Dark mode at any time using the ☀️/🌙 button in the top bar.</p>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/docs-data.js"></script>
+  <script src="js/playground.js"></script>
+  <script src="js/quiz.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
